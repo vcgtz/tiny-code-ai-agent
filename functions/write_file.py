@@ -4,8 +4,29 @@ Function to write a file
 
 import os
 
+from google.genai import types
+
 from functions.helpers import get_absolute_path, is_path_inside_working_dir, join_paths, exists_path
 
+
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Write the content in the specified file path, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The file path to write the content, relative to the working directory. It must be provided.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="Text content to be write in the file path. It must be provided.",
+            )
+        },
+        required=["file_path", "content"],
+    )
+)
 
 def write_file(working_directory, file_path, content):
     """
